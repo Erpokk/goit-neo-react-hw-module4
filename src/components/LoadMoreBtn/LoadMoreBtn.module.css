@@ -1,0 +1,18 @@
+.btn {
+  display: flex;
+  justify-content: center; /* Горизонтальное центрирование */
+  align-items: center; /* Вертикальное центрирование */
+  margin: 0 auto;
+  background-color: rgba(78, 117, 255, 1);
+  width: 240px;
+  height: 40px;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  transition: 250ms;
+}
+
+.btn:hover,
+.btn:focus-within {
+  background: rgba(108, 140, 255, 1);
+}

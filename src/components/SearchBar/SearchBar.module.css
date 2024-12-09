@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: rgba(78, 117, 255, 1);
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.headerInput {
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+}
+
+.headerBtn {
+  margin: 0;
+  background-color: transparent;
+  border: none;
+}
+
+.headerBtn > svg {
+  transform: translateY(3px);
+  cursor: pointer;
+}
