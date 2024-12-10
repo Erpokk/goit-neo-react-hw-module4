@@ -4,8 +4,10 @@ import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn.jsx";
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Blocks } from "react-loader-spinner";
-import toast from "react-hot-toast";
+import ImageModal from "./components/ImageModal/ImageModal.jsx";
+import Loader from "./components/Loader/Loader.jsx";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage.jsx";
+
 const apiKey = import.meta.env.VITE_UNSPLASH_API_KEY;
 
 function App() {
@@ -14,11 +16,15 @@ function App() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [load, setLoad] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function fetchPhotos() {
       if (query === "") return;
       try {
+        setError(false);
         setLoad(true);
         const response = await axios.get(
           "https://api.unsplash.com/search/photos",
@@ -30,8 +36,9 @@ function App() {
           }
         );
         setPhotos((prevPhotos) => [...prevPhotos, ...response.data.results]);
+        console.log(response.data.results);
       } catch (error) {
-        toast.error("Error during HTTP-request");
+        setError(true);
         console.error("Error fetching photos:", error);
       } finally {
         setLoad(false);
@@ -46,6 +53,16 @@ function App() {
     setPhotos([]);
     setPage(1);
   };
+
+  const openModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
   return (
     <div>
       <SearchBar
@@ -53,21 +70,21 @@ function App() {
         onSearchChange={setSearch}
         onSearchSubmit={handleSearchSubmit}
       />
-      {photos != 0 && <ImageGallery data={photos} />}
-      {load && (
-        <Blocks
-          height="80"
-          width="80"
-          color="#4fa94d"
-          ariaLabel="blocks-loading"
-          wrapperStyle={{}}
-          wrapperClass="blocks-wrapper"
-          visible={true}
-        />
+      {error && <ErrorMessage />}
+      {photos != 0 && !error && (
+        <ImageGallery data={photos} onImageClick={openModal} />
       )}
-      {photos.length > 0 ? (
+      {load && <Loader />}
+      {photos.length > 0 && !error ? (
         <LoadMoreBtn onLoad={setPage}>Load more</LoadMoreBtn>
       ) : null}
+      {!error && (
+        <ImageModal
+          isModalOpen={isModalOpen}
+          closeModal={closeModal}
+          selectedImage={selectedImage}
+        />
+      )}
     </div>
   );
 }
