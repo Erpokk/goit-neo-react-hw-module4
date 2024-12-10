@@ -76,7 +76,9 @@ function App() {
       )}
       {load && <Loader />}
       {photos.length > 0 && !error ? (
-        <LoadMoreBtn onLoad={setPage}>Load more</LoadMoreBtn>
+        <LoadMoreBtn onClick={() => setPage((prevPage) => prevPage + 1)}>
+          Load more
+        </LoadMoreBtn>
       ) : null}
       {!error && (
         <ImageModal

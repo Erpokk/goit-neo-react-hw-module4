@@ -1,9 +1,11 @@
-import css from "./LoadMoreBtn.module.css"
+import css from "./LoadMoreBtn.module.css";
 
-const LoadMoreBtn = ({ onLoad, children }) => {
-    return (
-        <button className={css.btn} onClick={() => onLoad(prevPage => prevPage + 1)}>{children}</button>
-    )
-}
+const LoadMoreBtn = ({ onClick, children }) => {
+  return (
+    <button className={css.btn} onClick={onClick}>
+      {children}
+    </button>
+  );
+};
 
 export default LoadMoreBtn;
